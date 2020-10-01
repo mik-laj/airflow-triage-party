@@ -1,11 +1,15 @@
-# Triage-paarty for Airflow
+# Triage-party for Airflow
 
 
-Triage party configurations for the Apache Airflow project with scripts for quick local launch
+[Triage party](https://github.com/google/triage-party) configurations for [the Apache Airflow](https://github.com/apache/airflow) project with scripts for quick local start.
 
 ## Quick start
 
-To run the application locally, you must have [Github CLI](https://github.com/cli/cli) and you must be logged in to it
+Before running the application locally, you must meet the following prerequisite:
+
+- you must have [Github CLI](https://github.com/cli/cli) and you must be logged in to it.
+
+Once you complete this, you can run the command below:
 
 ```bash
 # Fetch triage-party repository

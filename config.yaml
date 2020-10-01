@@ -1,0 +1,260 @@
+settings:
+  name: minimal
+  # On a scale of 0-1, how similar do two issues need to be to be tagged as "similar"
+  min_similarity: 0.75
+  # Repositories to query, can be overridden by -repos
+  repos:
+    - https://github.com/apache/airflow
+    # - https://github.com/apache/airflow-site
+    # - https://github.com/apache/airflow-on-k8s-operator
+    # - https://github.com/apache/airflow-client-go
+    # - https://github.com/apache/airflow-client-python
+    # - https://github.com/apache/airflow-client-javascript
+    # - https://github.com/apache/airflow-client-java
+
+collections:
+  - id: home
+    name: Home
+    rules:
+      - issue-needs-comment
+      # - needs-review
+
+  - id: daily
+    name: Daily Triage
+    dedup: false
+    description: To be emptied out daily
+    rules:
+      - fresh-issue-needs-kind
+      - fresh-issue-needs-area
+      - google--issues
+      - good-first-issue-assigned-unactive
+      # - google--prs
+
+      # - issue-needs-comment
+      # # - p0-fix-overdue
+      # # - p0-followup-overdue
+      # # # Don't leave code reviews hanging
+      # - pr-reviewable
+      # # # missing initial feedback
+      # - issue-needs-kind
+      # - issue-needs-area
+      # - issue-
+      # # # reprioritize
+      # # - issue-new-with-reactions
+      # # - issue-new-with-many-commenters
+      # # # Don't forget our users
+      # # - issue-has-question
+      # # - issue-updated-kind-question
+
+  - id: long-standing
+    name: Long standing
+    dedup: false
+    description: To be emptied out daily
+    rules:
+      - long-standing--issue-needs-kind
+      - long-standing--issue-needs-area
+
+  - id: Google
+    name: Google
+    dedup: false
+    description: To be emptied out daily
+    rules:
+      - google--issues
+      - long-standing--issue-needs-area
+
+  - id: all
+    name: All issues & PRs
+    debug: true
+    description: AA
+    rules:
+      # - open-prs
+      - open-issues
+
+  - id: similar
+    name: Similar
+    description: Items which appear similar to one other. Review for duplicates or vague titles.
+    rules:
+      - similar-prs
+      - similar-issues
+
+  # - id: all-rules
+  #   name: All rules
+  #   rules:
+  #     - closed-milestone-issues
+  #     - fresh-issue-needs-area
+  #     - fresh-issue-needs-kind
+  #     - google--issues
+  #     - google--prs
+  #     - issue-assigned-unactive
+  #     - issue-has-question
+  #     - issue-needs-comment
+  #     - long-standing--issue-needs-area
+  #     - long-standing--issue-needs-kind
+  #     - needs-review
+  #     - open-issues
+  #     - open-prs
+  #     - pr-reviewable
+  #     - pr-unapproved-stale
+  #     - similar-issues
+  #     - similar-prs
+
+  - id: __open__
+    name: All open PR's and Issues that should be considered for repository stats (hidden)
+    used_for_statistics: true
+    hidden: true
+    rules:
+      # - open-prs
+      - open-issues
+
+  - id: __velocity__
+    name: issues to include in velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - closed-milestone-issues
+
+rules:
+  issue-needs-comment:
+    name: "Unresponded, older than 7 days"
+    type: issue
+    filters:
+      - tag: "!commented"
+      - tag: "recv"
+      - created: +3d
+
+  # Community development
+  good-first-issue-assigned-unactive:
+    name: "Unactive assigned Good first issue"
+    resolution: "Unassign current user"
+    type: issue
+    filters:
+      - tag: "assigned"
+      - responded: +30d
+      - label: "good first issue"
+
+  # needs-review:
+  #   name: "Needs Review"
+  #   type: pull_request
+  #   filters:
+  #     - title: "!.*(WIP|wip).*"
+  #     - tag: "!draft"
+  #     - tag: "(new-commits|unreviewed)"
+
+  # Don't leave code reviews hanging
+  pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as do-not-merge/work-in-progress"
+    type: pull_request
+    filters:
+      - label: "!do-not-merge.*"
+      - label: "!needs-rebase"
+      - label: "!.*wip"
+      # - tag: "!changes-requested"
+      # - tag: "!send"
+      # - tag: "!commented"
+
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+
+  # Missing labels
+  long-standing--issue-needs-kind:
+    name: "Issues without kind"
+    resolution: "Add a label"
+    type: issue
+    filters:
+      - label: "!kind:.+"
+      - label: "!invalid"
+
+  fresh-issue-needs-kind:
+    name: "Fresh Issues without kind"
+    resolution: "Add a label"
+    type: issue
+    filters:
+      - label: "!kind:.+"
+      - label: "!invalid"
+      - created: -14d
+
+  long-standing--issue-needs-area:
+    name: "Issues without area"
+    resolution: "Add a label"
+    type: issue
+    filters:
+      - label: "!area:.+"
+      - label: "!invalid"
+
+  fresh-issue-needs-area:
+    name: "Fresh issues without area"
+    resolution: "Add a label"
+    type: issue
+    filters:
+      - label: "!area:.+"
+      - label: "!invalid"
+      - created: -14d
+
+  # Providers
+  google--issues:
+    name: "Google Issues (no docs)"
+    type: issue
+    filters:
+      - label: "provider:Google"
+      - label: "!area:docs"
+
+  # google--prs:
+  #   name: "Google Pull Requests"
+  #   type: pull_request
+  #   filters:
+  #     - label: "provider:Google"
+
+  # PR's needing closure
+  pr-unapproved-stale:
+    name: "Pull Requests: Stale"
+    resolution: "Add comment and/or close PR"
+    type: pull_request
+    filters:
+      - created: +20d
+      - updated: +5d
+
+  # People with questions
+  issue-has-question:
+    name: "Overdue answers for a question"
+    resolution: "Add a comment"
+    type: issue
+    filters:
+      - tag: recv-q
+      # - label: "!triage/needs-information"
+      - tag: "!member-last"
+      - tag: "!contributor-last"
+      - responded: +6d
+
+  ## Similar
+  similar-prs:
+    name: "Similar Pull Requests"
+    type: pull_request
+    resolution: Close as duplicate or give a better title
+    filters:
+      - tag: similar
+
+  similar-issues:
+    name: "Similar Issues"
+    type: issue
+    resolution: Close as duplicate or give a better title
+    filters:
+      - tag: similar
+
+  # Other
+  # for statistics generation
+  open-issues:
+    name: "Open Issues"
+    type: issue
+
+  # open-prs:
+  #   name: "Open PRs"
+  #   type: pull_request
+
+  closed-milestone-issues:
+    name: "Recently closed milestone issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -90d
+      - milestone: ".*"

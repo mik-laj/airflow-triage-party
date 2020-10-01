@@ -1,0 +1,3 @@
+[submodule "triage-party"]
+	path = triage-party
+	url = git@github.com:google/triage-party.git

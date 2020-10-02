@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ ! -z "$PROJECT_ID" ]; then
-	PROJECT_ID="${PROJECT_ID}"
-elif [ ! -z "$GCLOUD_PROJECT_ID" ]; then
-	PROJECT_ID="${GCLOUD_PROJECT_ID}"
-else
-	PROJECT_ID="$(gcloud config get-value "core/project")"
+if [[ -z "$PROJECT_ID" ]]; then
+	if [[ -z "$GCLOUD_PROJECT_ID" ]]; then
+		PROJECT_ID="${GCLOUD_PROJECT_ID}"
+	else
+		PROJECT_ID="$(gcloud config get-value "core/project")"
+	fi
 fi
 
 readonly PROJECT_ID

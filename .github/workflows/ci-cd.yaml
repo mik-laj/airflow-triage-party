@@ -22,7 +22,7 @@ jobs:
           submodules: recursive
           lfs: true
 
-      - name: "Setup Google SDK"
+      - name: "Setup Google SDK" (push)
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         if: ${{ github.event_name == 'push' }}
         with:
@@ -30,20 +30,17 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
 
-      - run: gcloud info
-        if: ${{ github.event_name == 'push' }}
-
       - name: "Setup Terraaform"
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.28
 
-      - name: Terraform Init
+      - name: Terraform Init (pull_request)
         if: github.event_name == 'pull_request'
         run: terraform init -backend=false
         working-directory: terraform
 
-      - name: Terraform Init
+      - name: Terraform Init (push)
         if: github.event_name == 'push'
         run: terraform init
         working-directory: terraform
@@ -52,21 +49,21 @@ jobs:
         run: terraform validate -no-color
         working-directory: terraform
 
-      - name: Terraform Plan
+      - name: Terraform Plan (push)
         if: github.event_name == 'push'
         run: ../log_stream.sh plan terraform plan -no-color
         env: 
           TF_VAR_github_token: ${{ github.token }}
         working-directory: terraform
 
-      - name: Build image
+      - name: Build image (pull_request)
         if: github.event_name == 'pull_request'
         run: ./build.sh
         env:
           IMAGE_TAG: ${{ github.sha }}
           PROJECT_ID: github-action
 
-      - name: Build and publish image
+      - name: Build and publish image (push)
         if: github.event_name == 'push'
         run: |
           gcloud auth configure-docker
@@ -75,7 +72,7 @@ jobs:
         env: 
           IMAGE_TAG: ${{ github.sha }}
 
-      - name: Terraform Apply
+      - name: Terraform Apply (push)
         if: github.event_name == 'push'
         run: |
           ../log_stream.sh apply terraform apply -auto-approve

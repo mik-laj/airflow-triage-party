@@ -1,2 +1,3 @@
 pcache/
 .DS_Store
+terraform/.terraform/

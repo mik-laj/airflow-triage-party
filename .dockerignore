@@ -1,0 +1,5 @@
+# Ignore everything
+**
+
+# Allow only config
+!config.yaml

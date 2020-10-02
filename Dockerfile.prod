@@ -1,0 +1,6 @@
+FROM triage-party
+
+ENV CONFIG_PATH=/config/config.yaml
+COPY /config.yaml /config/config.yaml
+
+CMD ["/app/main", "--name=Airflow", "--min-refresh=30s", "--max-refresh=8m", "--site=/app/site", "--3p=/app/third_party", "-skip_headers"]

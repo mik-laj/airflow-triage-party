@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PROJECT_ID=${PROJECT_ID:=$(gcloud config get-value "core/project")}
+readonly PROJECT_ID
+
+CONTAINER_REGISTRY_URL=${CONTAINER_REGISTRY_URL:="gcr.io/${PROJECT_ID}"}
+readonly CONTAINER_REGISTRY_URL
+
+IMAGE_NAME=${IMAGE_NAME:="${CONTAINER_REGISTRY_URL}/triage-party"}
+IMAGE_TAG=${IMAGE_TAG:="latest"}
+FULL_IMAGE_NAME=${IMAGE_NAME:="${IMAGE_NAME}:${IMAGE_TAG}"}

@@ -116,6 +116,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
+
 # Otuputs
 output "cloud_run_url" {
   value = "${google_cloud_run_service.default.status[0].url}"

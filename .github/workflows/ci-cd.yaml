@@ -40,6 +40,11 @@ jobs:
           terraform_version: 0.12.28
 
       - name: Terraform Init
+        if: github.event_name == 'pull_request'
+        run: terraform init -backend=false
+        working-directory: terraform
+
+      - name: Terraform Init
         if: github.event_name == 'push'
         run: terraform init
         working-directory: terraform
@@ -55,7 +60,7 @@ jobs:
           TF_VAR_github_token: ${{ github.token }}
         working-directory: terraform
 
-      - name: Buildimage
+      - name: Build image
         if: github.event_name == 'pull_request'
         run: ./build.sh
         env:

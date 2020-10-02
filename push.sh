@@ -8,9 +8,4 @@ cd "${PRIJECT_ROOT}" || exit 1
 
 source "_common_variables.sh"
 
-docker build triage-party \
-	--tag=triage-party
-
-docker build . \
-	--tag="${FULL_IMAGE_NAME}"\
-	--file=Dockerfile.prod
+docker push "${FULL_IMAGE_NAME}"

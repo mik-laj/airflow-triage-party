@@ -79,7 +79,7 @@ jobs:
       - name: Terraform Apply
         if: github.event_name == 'push'
         run: |
-          ../log_stream.sh apply terraform apply
+          ../log_stream.sh apply terraform apply -auto-approve
           echo "Terraform outputs:"
           terraform output
         working-directory: terraform

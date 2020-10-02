@@ -3,7 +3,7 @@
 set -x
 
 if [[ -z "${PROJECT_ID:-}" ]]; then
-	if [[ -z "${GCLOUD_PROJECT_ID:-}" ]]; then
+	if [[ ! -z "${GCLOUD_PROJECT_ID:-}" ]]; then
 		PROJECT_ID="${GCLOUD_PROJECT_ID}"
 	else
 		PROJECT_ID="$(gcloud config get-value "core/project")"

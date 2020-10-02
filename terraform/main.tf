@@ -34,11 +34,10 @@ resource "random_id" "db_name_suffix" {
 
 resource "google_sql_database_instance" "instance" {
   name   = "airflow-triage-party-${random_id.db_name_suffix.hex}"
+  project = local.project_id
 
   region = local.db_location
   database_version = "POSTGRES_12"
-
-  project = local.project_id
 
   settings {
     # Smallest instance
@@ -117,7 +116,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
-# Otuputs
+# Outputs
 output "cloud_run_url" {
   value = "${google_cloud_run_service.default.status[0].url}"
 }

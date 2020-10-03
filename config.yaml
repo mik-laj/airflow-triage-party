@@ -27,7 +27,7 @@ collections:
       - fresh-issue-needs-kind
       - fresh-issue-needs-area
       - google--issues
-      - good-first-issue-assigned-unactive
+      - good-first-issues--assigned-unactive
       # - google--prs
 
       # - issue-needs-comment
@@ -61,6 +61,13 @@ collections:
     rules:
       - google--issues
       - long-standing--issue-needs-area
+
+  - id: godd-first-issues
+    name: Good first issues
+    rules:
+      - good-first-issues--assigned-unactive
+      - good-first-issues--unssigned
+      - good-first-issues--awaiting-response
 
   - id: all
     name: All issues & PRs
@@ -123,7 +130,7 @@ rules:
       - created: +3d
 
   # Community development
-  good-first-issue-assigned-unactive:
+  good-first-issues--assigned-unactive:
     name: "Unactive assigned Good first issue"
     resolution: "Unassign current user"
     type: issue
@@ -225,6 +232,21 @@ rules:
       - tag: "!member-last"
       - tag: "!contributor-last"
       - responded: +6d
+
+  # Goo first issues
+  good-first-issues--unssigned:
+    name: "Unassigned godd first issue"
+    type: issue
+    filters:
+      - label: "good first issue"
+      - tag: "!assigned"
+
+  good-first-issues--awaiting-response:
+    name: "Godd first issue - Awaiting response"
+    type: issue
+    filters:
+      - label: "good first issue"
+      - tag: "recv-q"
 
   ## Similar
   similar-prs:

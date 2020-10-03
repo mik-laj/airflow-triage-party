@@ -66,7 +66,7 @@ collections:
     name: Good first issues
     rules:
       - good-first-issues--assigned-unactive
-      - good-first-issues--unssigned
+      - good-first-issues--unassigned
       - good-first-issues--awaiting-response
 
   - id: all
@@ -234,7 +234,7 @@ rules:
       - responded: +6d
 
   # Goo first issues
-  good-first-issues--unssigned:
+  good-first-issues--unassigned:
     name: "Unassigned godd first issue"
     type: issue
     filters:

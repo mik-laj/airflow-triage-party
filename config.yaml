@@ -60,7 +60,6 @@ collections:
     description: To be emptied out daily
     rules:
       - google--issues
-      - long-standing--issue-needs-area
 
   - id: godd-first-issues
     name: Good first issues

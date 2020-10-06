@@ -3,11 +3,11 @@
 set -x
 
 if [[ -z "${PROJECT_ID:-}" ]]; then
-	if [[ ! -z "${GCLOUD_PROJECT:-}" ]]; then
-		PROJECT_ID="${GCLOUD_PROJECT}"
-	else
-		PROJECT_ID="$(gcloud config get-value "core/project")"
-	fi
+    if [[ -n "${GCLOUD_PROJECT:-}" ]]; then
+        PROJECT_ID="${GCLOUD_PROJECT}"
+    else
+        PROJECT_ID="$(gcloud config get-value "core/project")"
+    fi
 fi
 
 readonly PROJECT_ID

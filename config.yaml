@@ -1,3 +1,4 @@
+---
 settings:
   name: minimal
   # On a scale of 0-1, how similar do two issues need to be to be tagged as "similar"

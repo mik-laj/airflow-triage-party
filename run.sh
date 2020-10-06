@@ -8,7 +8,7 @@ readonly ROOT_DIR
 echo "${ROOT_DIR}"
 cd "${ROOT_DIR}"
 
-GITHUB_TOKEN=$(cat ~/.config/gh/config.yml | grep oauth_token | cut -d ":" -f 2 | sed "s/ //g")
+GITHUB_TOKEN=$(grep oauth_token ~/.config/gh/config.yml| cut -d ":" -f 2 | sed "s/ //g")
 export GITHUB_TOKEN
 
 docker run \
@@ -22,7 +22,7 @@ docker run \
     -e PORT=8080 -p 8080:8080 \
     triage-party \
     /app/main \
-        --name "Airflow"
+        --name "Airflow" \
         --min-refresh=30s \
         --max-refresh=8m \
         --site=/app/site \

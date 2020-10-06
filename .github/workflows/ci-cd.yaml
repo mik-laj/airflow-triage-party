@@ -24,6 +24,8 @@ jobs:
 
       - name: "Setup Python"
         uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
       - name: "Setup Terraaform"
         uses: hashicorp/setup-terraform@v1
         with:

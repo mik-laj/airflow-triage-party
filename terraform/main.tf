@@ -4,27 +4,27 @@ data google_client_config "current" {}
 
 # Variables
 variable "docker_image_name" {
-  type = string
+  type        = string
   description = "Docker image name"
-  default = "triage-party"
+  default     = "triage-party"
 }
 
 variable "docker_image_tag" {
-  type = string
+  type        = string
   description = "Docker image tag"
-  default = "latest"
+  default     = "latest"
 }
 
 variable "github_token" {
-  type = string
+  type        = string
   description = "Github Token"
 }
 
 # Configuration
 locals {
-  db_location = "europe-west1"
+  db_location        = "europe-west1"
   cloud_run_location = "europe-west4"
-  project_id = data.google_client_config.current.project
+  project_id         = data.google_client_config.current.project
 }
 
 # Cloud SQL Instance
@@ -33,10 +33,10 @@ resource "random_id" "db_name_suffix" {
 }
 
 resource "google_sql_database_instance" "instance" {
-  name   = "airflow-triage-party-${random_id.db_name_suffix.hex}"
+  name    = "airflow-triage-party-${random_id.db_name_suffix.hex}"
   project = local.project_id
 
-  region = local.db_location
+  region           = local.db_location
   database_version = "POSTGRES_12"
 
   settings {
@@ -63,7 +63,7 @@ resource "google_sql_user" "user" {
 
 # Cloud Run service
 resource "google_cloud_run_service" "default" {
-  name     = "airflow-triage-party-srv"
+  name = "airflow-triage-party-srv"
   # See: https://cloud.google.com/run/docs/locations
   location = local.cloud_run_location
 
@@ -72,16 +72,16 @@ resource "google_cloud_run_service" "default" {
       containers {
         image = "gcr.io/${local.project_id}/${var.docker_image_name}:${var.docker_image_tag}"
         env {
-          name = "GITHUB_TOKEN"
+          name  = "GITHUB_TOKEN"
           value = var.github_token
         }
         env {
-          name = "PERSIST_BACKEND"
+          name  = "PERSIST_BACKEND"
           value = "cloudsql"
         }
 
         env {
-          name = "PERSIST_PATH"
+          name  = "PERSIST_PATH"
           value = "host=${local.project_id}:${local.db_location}:${google_sql_database_instance.instance.name} user=${google_sql_user.user.name} password=${random_password.db_password.result} dbname=${google_sql_database.database.name}"
         }
       }
@@ -109,9 +109,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.default.location
-  project     = google_cloud_run_service.default.project
-  service     = google_cloud_run_service.default.name
+  location = google_cloud_run_service.default.location
+  project  = google_cloud_run_service.default.project
+  service  = google_cloud_run_service.default.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }

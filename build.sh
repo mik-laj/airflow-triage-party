@@ -8,9 +8,12 @@ cd "${PRIJECT_ROOT}" || exit 1
 
 source "_common_variables.sh"
 
+BASE_IMAGE="raw-triage-party:latest"
+
 docker build triage-party \
-	--tag=triage-party
+    --tag="${BASE_IMAGE}"
 
 docker build . \
-	--tag="${FULL_IMAGE_NAME}"\
-	--file=Dockerfile.prod
+    --tag="${FULL_IMAGE_NAME}"\
+    --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+    --file=Dockerfile.prod

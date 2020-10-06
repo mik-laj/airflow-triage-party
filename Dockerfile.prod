@@ -1,4 +1,7 @@
-FROM triage-party
+ARG BASE_IMAGE=triage-party
+
+# hadolint ignore=DL3006
+FROM ${BASE_IMAGE}
 
 ENV CONFIG_PATH=/config/config.yaml
 COPY /config.yaml /config/config.yaml

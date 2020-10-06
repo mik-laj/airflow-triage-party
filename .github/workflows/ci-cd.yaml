@@ -41,7 +41,6 @@ jobs:
   image:
     name: "Build docker image"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     steps:
       - name: "Checkout ${{ github.ref }} ( ${{ github.sha }} )"
         uses: actions/checkout@v2

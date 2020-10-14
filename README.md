@@ -1,7 +1,8 @@
 # Triage-party for Airflow
 
+[Triage party](https://github.com/google/triage-party) configurations for [the Apache Airflow](https://github.com/apache/airflow) project with scripts for quick local start and configuration for CI/CD. 
 
-[Triage party](https://github.com/google/triage-party) configurations for [the Apache Airflow](https://github.com/apache/airflow) project with scripts for quick local start.
+Link to deployed app: https://airflow-triage-party-srv-3p5j5jq7xq-ez.a.run.app/s/home 
 
 ## Quick start
 
@@ -21,6 +22,11 @@ bash build.sh
 # Run app.
 bash run.sh
 ```
+## CI/CD
+
+All changes merged into the master branch are automatically published by Github Action/Terraform on GCP using Cloud Run and Cloud SQL.
+
+Link to deployed app: https://airflow-triage-party-srv-3p5j5jq7xq-ez.a.run.app/s/home 
 
 ## Screenshot
 
